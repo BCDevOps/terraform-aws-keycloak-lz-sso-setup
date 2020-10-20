@@ -17,8 +17,45 @@ This repo provides a starting point for users who want to create valid Terraform
 ## Documentation
 <!--- Point to another readme or create a GitHub Pages (https://guides.github.com/features/pages/) --->
 
+## References
+
+The steps here are partially based on those in [this](https://scandiweb.com/blog/sign-in-to-amazon-aws-using-saml-protocol-and-keycloak-as-identity-provider/) article:
+
 ## Getting Started
-<!--- setup env vars, secrets, instructions... --->
+
+### Pre-requisites
+
+#### KeyCloak
+
+* `realm-admin` access to the KeyCloak realm where the configuration objects will be created
+
+### AWS
+
+* admin-type access with access key to an AWS account where the SAML configuration objects will be created
+
+### Initial Steps
+
+Prior to executing the automation code, there are a few steps (below) that must be completed manually.   
+
+* Create a KeyCloak OIDC client that will be used by Terraform to perform its automations.  This should have the following values on the "Settings" tab:
+    * Access-type: `confidential`
+    * Standard Flow Enabled: `Off`
+    * Implicit Flow Enabled: `Off`
+    * Direct Access Grants Enabled: `Off`
+    * Service Accounts Enabled: `On`
+* Capture and save the `Secret` token from the `Credentials` tab of the client created above.
+
+* retrieve the AWS-provided SAML metadata file [here](https://signin.aws.amazon.com/static/saml-metadata.xml) and save to your workstation.
+* In the KeyCloak realm, create a new SAML client
+* Import the AWS-provided SAML metadata file, which will pre-populate most to the client configuration value.
+* Modify the `Base URL` field so it looks like: `/auth/realms/<your_realm_name>/protocol/saml/clients/amazon-aws`
+* Modify the `IDP Initiated SSO URL Name` field so it has the value `amazon-aws`.
+* Modify `Name ID Format` so it has the value `persistent`
+* Save the client configuration
+* In the "Scope" tab for the client you just created, set "Full Scope Allowed" to "Off"
+
+
+
 
 ## Getting Help or Reporting an Issue
 <!--- Example below, modify accordingly --->
