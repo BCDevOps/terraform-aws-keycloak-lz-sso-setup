@@ -46,7 +46,7 @@ resource "aws_iam_role" "admin_role" {
       "Action": "sts:AssumeRoleWithSAML",
       "Condition": {
         "StringEquals": {
-          "SAML:aud": ${var.trusted_login_sources}
+          "SAML:aud": ${formatlist("%s",var.trusted_login_sources)}
         }
       }
     }
