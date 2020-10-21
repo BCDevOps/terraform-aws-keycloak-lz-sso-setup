@@ -28,3 +28,9 @@ variable "account_roles" {
 	description = "Roles and associated policies for an account."
 	type = map(string)
 }
+
+variable "trusted_login_sources" {
+	description = "A list of one or more URLs from which login is expected and permitted."
+	default = ["https://signin.aws.amazon.com/saml"]
+	type = list(string)
+}
