@@ -15,6 +15,10 @@ provider "http" {
 	version = "2.0.0"
 }
 
+locals {
+	idp_name = "${var.aws_saml_idp_name}-${var.kc_realm}"
+}
+
 data "keycloak_realm" "kc-lz-sso-realm" {
 	realm = var.kc_realm
 }
@@ -25,7 +29,7 @@ data "http" "saml_idp_descriptor" {
 }
 
 resource "aws_iam_saml_provider" "default" {
-	name                   = var.aws_saml_idp_name
+	name                   = local.idp_name
 	saml_metadata_document = data.http.saml_idp_descriptor.body
 }
 
@@ -41,7 +45,7 @@ resource "aws_iam_role" "admin_role" {
     {
       "Effect": "Allow",
       "Principal": {
-        "Federated": "arn:aws:iam::${data.aws_caller_identity.aws_context.account_id}:saml-provider/BCGovKeyCloak"
+        "Federated": "arn:aws:iam::${data.aws_caller_identity.aws_context.account_id}:saml-provider/${local.idp_name}"
       },
       "Action": "sts:AssumeRoleWithSAML",
       "Condition": {
@@ -81,5 +85,6 @@ module "cloud_roles" {
 		account_number = data.aws_caller_identity.aws_context.account_id
 	}]
 	role_names = [for role,arn in var.account_roles : role]
+	idp_name = local.idp_name
 }
 
