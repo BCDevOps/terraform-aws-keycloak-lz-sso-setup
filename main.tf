@@ -29,7 +29,7 @@ data "http" "saml_idp_descriptor" {
 
 resource "aws_iam_saml_provider" "default" {
 	name                   = var.aws_saml_idp_name
-	saml_metadata_document = data.http.saml_idp_descriptor.body
+	saml_metadata_document = tostring(data.http.saml_idp_descriptor.body)
 }
 
 resource "aws_iam_role" "admin_role" {
