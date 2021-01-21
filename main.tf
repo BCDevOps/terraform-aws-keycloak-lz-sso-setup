@@ -22,6 +22,9 @@ data "keycloak_realm" "kc-lz-sso-realm" {
 // Note: we need to use the http data source over the keycloak provider's `keycloak_saml_client_installation_provider` because recent versions of KeyCloak such as ours don't expose the descriptor in the same way as prior versions.
 data "http" "saml_idp_descriptor" {
 	url = "${var.kc_base_url}/auth/realms/${var.kc_realm}/protocol/saml/descriptor"
+	request_headers  = {
+		Accept = "application/xml;charset=UTF-8"
+	}
 }
 
 resource "aws_iam_saml_provider" "default" {
@@ -67,12 +70,13 @@ data aws_caller_identity "aws_context" {}
 
 module "cloud_roles" {
 
-	source = "github.com/BCDevOps/terraform-keycloak-role-group-simplification"
+		source = "github.com/BCDevOps/terraform-keycloak-role-group-simplification"
 
 	realm = var.kc_realm
 	iam_auth_client_id = var.kc_iam_auth_client_id
 
 	//	module operates on a list of accounts.  this allows us to define a bunch of projects and get all the accounts created for them.
+//	@todo fix this so it supports distinct values for each of hte attributes insttead of va.raccount_name for everything
 	accounts = [ {
 		project_identifier = var.account_name
 		project_name = var.account_name

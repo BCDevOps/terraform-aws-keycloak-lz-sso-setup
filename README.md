@@ -43,7 +43,8 @@ Prior to executing the automation code, there are a few steps (below) that must 
     * Implicit Flow Enabled: `Off`
     * Direct Access Grants Enabled: `Off`
     * Service Accounts Enabled: `On`
-* Capture and save the `Secret` token from the `Credentials` tab of the client created above.
+* Capture and save the `Secret` token from the `Credentials` tab of the client created above. It will be used as the keycloak access key by terraform.
+* Grant the `realm-admin` or similar role to the service account you've just created via Clients -> <Your Client> -> Service Account Roles -> Client Roles  
 
 * retrieve the AWS-provided SAML metadata file [here](https://signin.aws.amazon.com/static/saml-metadata.xml) and save to your workstation.
 * In the KeyCloak realm, create a new SAML client
@@ -51,10 +52,19 @@ Prior to executing the automation code, there are a few steps (below) that must 
 * Modify the `Base URL` field so it looks like: `/auth/realms/<your_realm_name>/protocol/saml/clients/amazon-aws`
 * Modify the `IDP Initiated SSO URL Name` field so it has the value `amazon-aws`.
 * Modify `Name ID Format` so it has the value `persistent`
+
+* If you happen to have deployed `aws-login` before confoguing KeyCloak and AWS roles (which is fine) you can also edit the following with the url spit out by aws-login deployment:
+- Valid Redirect URIs (add it to the default)
+- Fine Grain SAML Endpoint Configuration -> Assertion Consumer Service Post Binding URL
+
 * Save the client configuration
 * In the "Scope" tab for the client you just created, set "Full Scope Allowed" to "Off"
 
-
+You'll need the following values for the automation code:
+- Client ID/GUID of the SAML client you created above (grab from URL)
+- Service Account key from Client -> Crednetials tab of the Terraform automation client you created above
+- The realm name
+- The base url of the KeyCloak server
 
 
 ## Getting Help or Reporting an Issue
