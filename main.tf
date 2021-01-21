@@ -23,7 +23,7 @@ data "keycloak_realm" "kc-lz-sso-realm" {
 data "http" "saml_idp_descriptor" {
 	url = "${var.kc_base_url}/auth/realms/${var.kc_realm}/protocol/saml/descriptor"
 	request_headers  = {
-		Accept = "application/xml;charset=UTF-8"
+		Accept = "application/xml"
 	}
 }
 
