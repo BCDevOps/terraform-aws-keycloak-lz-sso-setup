@@ -76,7 +76,7 @@ data aws_caller_identity "aws_context" {}
 
 module "cloud_roles" {
 
-		source = "github.com/BCDevOps/terraform-keycloak-role-group-simplification?ref=v0.0.1"
+		source = "github.com/BCDevOps/terraform-keycloak-role-group-simplification"
 
 	realm = var.kc_realm
 	iam_auth_client_id = var.kc_iam_auth_client_id
