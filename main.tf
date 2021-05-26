@@ -15,24 +15,31 @@ terraform {
   }
 }
 
-provider "http" {}
+//dropping this back in to allow for proper migration of resources deependent on it
+provider "http" {
+
+}
+
+provider "external" {
+
+}
 
 data "keycloak_realm" "kc-lz-sso-realm" {
   realm = var.kc_realm
 }
 
-// Note: we need to use the http data source over the keycloak provider's `keycloak_saml_client_installation_provider` because recent versions of KeyCloak such as ours don't expose the descriptor in the same way as prior versions.
-data "http" "saml_idp_descriptor" {
-  provider = autimo-http
-  url      = "${var.kc_base_url}/auth/realms/${var.kc_realm}/protocol/saml/descriptor"
-  request_headers = {
-    Accept = "application/xml"
+// more-or-less drop-in replacement for (broken-in-0.14) http provider
+data "external" "saml_idp_descriptor" {
+  program = ["${path.module}/bin/http_get.sh"]
+
+  query = {
+    url = "${var.kc_base_url}/auth/realms/${var.kc_realm}/protocol/saml/descriptor"
   }
 }
 
 resource "aws_iam_saml_provider" "default" {
   name                   = var.aws_saml_idp_name
-  saml_metadata_document = tostring(data.http.saml_idp_descriptor.body)
+  saml_metadata_document = tostring(data.external.saml_idp_descriptor.result.data)
 }
 
 resource "aws_iam_role" "admin_role" {
