@@ -8,10 +8,6 @@ terraform {
       source  = "hashicorp/aws"
       version = "3.11.0"
     }
-    autimo-http = {
-      source  = "terraform.autimo.com/autimo/http"
-      version = "2.0.0"
-    }
   }
 }
 
@@ -44,8 +40,9 @@ resource "aws_iam_saml_provider" "default" {
 
 resource "aws_iam_role" "admin_role" {
 
-  for_each = var.account_roles
-  name     = each.key
+  for_each             = var.account_roles
+  name                 = each.key
+  max_session_duration = 21600
 
   assume_role_policy = <<EOF
 {
