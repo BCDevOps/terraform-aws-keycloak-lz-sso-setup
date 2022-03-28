@@ -43,6 +43,7 @@ resource "aws_iam_role" "admin_role" {
   for_each             = var.account_roles
   name                 = each.key
   max_session_duration = 21600
+  permissions_boundary = aws_iam_policy.idp_guardrail.arn
 
   assume_role_policy = <<EOF
 {
@@ -63,6 +64,27 @@ resource "aws_iam_role" "admin_role" {
   ]
 }
 EOF
+}
+resource "aws_iam_policy" "idp_guardrail" {
+  name        = "Idp_guardrail"
+  description = "Policy to restrict actions on providers"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Sid" : "AllowAdminAccess",
+        "Effect" : "Allow",
+        "Action" : "*",
+        "Resource" : "*"
+      },
+      {
+        "Sid" : "DenyPermBoundaryIAMIDPAlteration",
+        "Effect" : "Deny",
+        "Action" : "iam:*Provider"
+        "Resource": "*"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "role-policy-attach" {
