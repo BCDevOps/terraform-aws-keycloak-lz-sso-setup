@@ -68,38 +68,36 @@ EOF
 resource "aws_iam_policy" "bcgov_perm_boundary" {
   name        = "BCGOV_Permission_Boundary"
   description = "Policy to restrict actions on BCGov Resources"
-  policy      = <<EOF
-    {
-      "Version": "2012-10-17",
-      "Statement": [
-          {
-              "Action": "*",
-              "Effect": "Allow",
-              "Resource": "*",
-              "Sid": "AllowAdminAccess"
-          },
-          {
-              "Action": "iam:*Provider",
-              "Effect": "Deny",
-              "Resource": "*",
-              "Sid": "DenyPermBoundaryBCGovIDPAlteration"
-          },
-          {
-              "Action": [
-                  "iam:Create*",
-                  "iam:Update*",
-                  "iam:Delete*"
-              ],
-              "Effect": "Deny",
-              "Resource": [
-                  "arn:aws:iam::*:role/BCGOV*",
-                  "arn:aws:iam::*:policy/BCGOV*"
-              ],
-              "Sid": "DenyPermBoundaryBCGovAlteration"
-          }
-      ]
-    }
-EOF
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action   = "*",
+        Effect   = "Allow",
+        Resource = "*",
+        Sid      = "AllowAdminAccess"
+      },
+      {
+        Action   = "iam:*Provider",
+        Effect   = "Deny",
+        Resource = "*",
+        Sid      = "DenyPermBoundaryBCGovIDPAlteration"
+      },
+      {
+        Action = [
+          "iam:Create*",
+          "iam:Update*",
+          "iam:Delete*"
+        ],
+        Effect = "Deny",
+        Resource = [
+          "arn:aws:iam::*:role/BCGOV*",
+          "arn:aws:iam::*:policy/BCGOV*"
+        ],
+        Sid = "DenyPermBoundaryBCGovAlteration"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "role-policy-attach" {
