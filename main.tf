@@ -43,7 +43,7 @@ resource "aws_iam_role" "admin_role" {
   for_each             = var.account_roles
   name                 = each.key
   max_session_duration = 21600
-  permissions_boundary = aws_iam_policy.idp_guardrail.arn
+  permissions_boundary = aws_iam_policy.bcgov_perm_boundary.arn
 
   assume_role_policy = <<EOF
 {
@@ -65,9 +65,9 @@ resource "aws_iam_role" "admin_role" {
 }
 EOF
 }
-resource "aws_iam_policy" "idp_guardrail" {
-  name        = "Idp_guardrail"
-  description = "Policy to restrict actions on providers"
+resource "aws_iam_policy" "bcgov_perm_boundary" {
+  name        = "BCGOV_Permission_Boundary"
+  description = "Policy to restrict actions on BCGov Resources"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -78,7 +78,7 @@ resource "aws_iam_policy" "idp_guardrail" {
         "Resource" : "*"
       },
       {
-        "Sid" : "DenyPermBoundaryIAMIDPAlteration",
+        "Sid" : "DenyPermBoundaryBCGOVIAMAlteration",
         "Effect" : "Deny",
         "Action" : [
         "iam:*Provider",
