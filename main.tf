@@ -80,7 +80,10 @@ resource "aws_iam_policy" "idp_guardrail" {
       {
         "Sid" : "DenyPermBoundaryIAMIDPAlteration",
         "Effect" : "Deny",
-        "Action" : "iam:*Provider"
+        "Action" : [
+        "iam:*Provider",
+        "iam:*BCGOV*"
+        ],
         "Resource": "*"
       }
     ]
