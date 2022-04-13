@@ -114,9 +114,9 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
       },
       {
         Action   = "iam:DeleteInstanceProfile"
-        Effect   = "Deny",
+        Effect   = "Deny"
         Resource = "arn:aws:iam::*:instance-profile/EC2-Default-SSM-AD-Role-ip"
-        sid      = "DenyDefaultInstanceProfileAlteration"
+        Sid      = "DenyDefaultInstanceProfileAlteration"
       },
       {
         Action = [
@@ -132,7 +132,7 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
             "aws:ResourceTag/Accelerator" = "PBMM"
           }
         }
-        sid = "DenyDefaultKMSAlteration"
+        Sid = "DenyDefaultKMSAlteration"
       },
       {
         Action = [
@@ -144,7 +144,7 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
           "arn:aws:ssm:*:*:parameter/*pbmmaccel*",
           "arn:aws:ssm:*:*:parameter/octk*"
         ]
-        sid = "DenyDefaultParameterStoreAlteration"
+        Sid = "DenyDefaultParameterStoreAlteration"
 
       },
       {
@@ -155,7 +155,7 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
         ]
         Effect   = "Deny"
         Resource = "arn:aws:secretsmanager:*:*:secret:accelerator*"
-        sid      = "DenyDefaultSecretManagerAlteration"
+        Sid      = "DenyDefaultSecretManagerAlteration"
       }
     ]
   })
