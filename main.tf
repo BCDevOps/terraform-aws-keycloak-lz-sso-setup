@@ -72,10 +72,10 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
     Version = "2012-10-17"
     Statement = [
       {
-        "Sid" : "AllowAdminAccess",
-        "Effect" : "Allow",
-        "Action" : "*",
-        "Resource" : "*"
+        Action   = "*",
+        Effect   = "Allow",
+        Resource = "*",
+        Sid      = "AllowAdminAccess"
       },
       {
         Action   = "iam:*Provider",
@@ -149,8 +149,6 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
         Effect   = "Deny",
         Resource = "arn:aws:secretsmanager:*:*:secret:accelerator*",
         sid      = "DenyDefaultSecretManagerAlteration"
-
-
       }
     ]
   })
