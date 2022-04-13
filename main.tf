@@ -135,7 +135,10 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
         sid = "DenyDefaultKMSAlteration"
       },
       {
-        Action = "ssm:DeleteParameters",
+        Action = [
+          "ssm:DeleteParameters",
+          "ssm:PutParameter"
+        ],
         Effect = "Deny",
         "Resource" : [
           "arn:aws:ssm:*:*:parameter/*pbmmaccel*",
@@ -145,7 +148,12 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
 
       },
       {
-        Action   = "secretsmanager:DeleteSecret",
+        Action = [
+          "secretsmanager:DeleteSecret",
+          "secretsmanager:CreateSecret",
+          "secretsmanager:UpdateSecret"
+        ],
+
         Effect   = "Deny",
         Resource = "arn:aws:secretsmanager:*:*:secret:accelerator*",
         sid      = "DenyDefaultSecretManagerAlteration"
