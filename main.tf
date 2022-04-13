@@ -87,14 +87,76 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
         Action = [
           "iam:Create*",
           "iam:Update*",
-          "iam:Delete*"
+          "iam:Delete*",
+          "iam:DetachRolePolicy",
+          "iam:DeleteRolePolicy"
         ],
         Effect = "Deny",
         Resource = [
-          "arn:aws:iam::*:role/BCGOV*",
-          "arn:aws:iam::*:policy/BCGOV*"
+          "arn:aws:iam::*:policy/BCGOV*",
+          "arn:aws:iam::*:role/CloudCustodian",
+          "arn:aws:iam::*:role/AWSCloudFormationStackSetExecutionRole",
+          "arn:aws:iam::*:role/*BCGOV*",
+          "arn:aws:iam::*:role/EC2-Default-SSM-AD-Role"
+
         ],
         Sid = "DenyPermBoundaryBCGovAlteration"
+      },
+      {
+        Action = [
+          "budgets:DeleteBudgetAction",
+          "budgets:UpdateBudgetAction",
+          "budgets:ModifyBudget"
+        ],
+        Effect   = "Deny",
+        Resource = "arn:aws:budgets::*:budget/Default*",
+        Sid      = "DenyDefaultBudgetAlteration"
+      },
+      {
+        Action   = "iam:DeleteInstanceProfile",
+        Effect   = "Deny",
+        Resource = "arn:aws:iam::*:instance-profile/EC2-Default-SSM-AD-Role-ip",
+        sid      = "DenyDefaultInstanceProfileAlteration"
+      },
+      {
+        Action = [
+          "kms:ScheduleKeyDeletion",
+          "kms:DeleteAlias",
+          "kms:DisableKey",
+          "kms:UpdateAlias"
+        ],
+        Effect   = "Deny",
+        Resource = "*",
+        Condition = {
+          "ForAnyValue:StringEquals" : {
+            "aws:ResourceTag/Accelerator" : "PBMM"
+          }
+        },
+        sid = "DenyDefaultKMSAlteration"
+      },
+      {
+        Action = [
+          "ssm:DeleteParameters",
+          "ssm:PutParameter"
+        ],
+        Effect = "Deny",
+        "Resource" : [
+          "arn:aws:ssm:*:*:parameter/*pbmmaccel*",
+          "arn:aws:ssm:*:*:parameter/octk*"
+        ],
+        sid = "DenyDefaultParameterStoreAlteration"
+
+      },
+      {
+        Action = [
+          "secretsmanager:DeleteSecret",
+          "secretsmanager:CreateSecret",
+          "secretsmanager:UpdateSecret"
+        ],
+
+        Effect   = "Deny",
+        Resource = "arn:aws:secretsmanager:*:*:secret:accelerator*",
+        sid      = "DenyDefaultSecretManagerAlteration"
       }
     ]
   })
