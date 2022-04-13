@@ -72,15 +72,15 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action   = "*",
-        Effect   = "Allow",
-        Resource = "*",
+        Action   = "*"
+        Effect   = "Allow"
+        Resource = "*"
         Sid      = "AllowAdminAccess"
       },
       {
-        Action   = "iam:*Provider",
-        Effect   = "Deny",
-        Resource = "*",
+        Action   = "iam:*Provider"
+        Effect   = "Deny"
+        Resource = "*"
         Sid      = "DenyPermBoundaryBCGovIDPAlteration"
       },
       {
@@ -90,8 +90,8 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
           "iam:Delete*",
           "iam:DetachRolePolicy",
           "iam:DeleteRolePolicy"
-        ],
-        Effect = "Deny",
+        ]
+        Effect = "Deny"
         Resource = [
           "arn:aws:iam::*:policy/BCGOV*",
           "arn:aws:iam::*:role/CloudCustodian",
@@ -99,7 +99,7 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
           "arn:aws:iam::*:role/*BCGOV*",
           "arn:aws:iam::*:role/EC2-Default-SSM-AD-Role"
 
-        ],
+        ]
         Sid = "DenyPermBoundaryBCGovAlteration"
       },
       {
@@ -107,15 +107,15 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
           "budgets:DeleteBudgetAction",
           "budgets:UpdateBudgetAction",
           "budgets:ModifyBudget"
-        ],
-        Effect   = "Deny",
-        Resource = "arn:aws:budgets::*:budget/Default*",
+        ]
+        Effect   = "Deny"
+        Resource = "arn:aws:budgets::*:budget/Default*"
         Sid      = "DenyDefaultBudgetAlteration"
       },
       {
-        Action   = "iam:DeleteInstanceProfile",
+        Action   = "iam:DeleteInstanceProfile"
         Effect   = "Deny",
-        Resource = "arn:aws:iam::*:instance-profile/EC2-Default-SSM-AD-Role-ip",
+        Resource = "arn:aws:iam::*:instance-profile/EC2-Default-SSM-AD-Role-ip"
         sid      = "DenyDefaultInstanceProfileAlteration"
       },
       {
@@ -124,26 +124,26 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
           "kms:DeleteAlias",
           "kms:DisableKey",
           "kms:UpdateAlias"
-        ],
-        Effect   = "Deny",
-        Resource = "*",
+        ]
+        Effect   = "Deny"
+        Resource = "*"
         Condition = {
-          "ForAnyValue:StringEquals" : {
-            "aws:ResourceTag/Accelerator" : "PBMM"
+          "ForAnyValue:StringEquals" = {
+            "aws:ResourceTag/Accelerator" = "PBMM"
           }
-        },
+        }
         sid = "DenyDefaultKMSAlteration"
       },
       {
         Action = [
           "ssm:DeleteParameters",
           "ssm:PutParameter"
-        ],
-        Effect = "Deny",
-        "Resource" : [
+        ]
+        Effect = "Deny"
+        Resource = [
           "arn:aws:ssm:*:*:parameter/*pbmmaccel*",
           "arn:aws:ssm:*:*:parameter/octk*"
-        ],
+        ]
         sid = "DenyDefaultParameterStoreAlteration"
 
       },
@@ -152,10 +152,9 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
           "secretsmanager:DeleteSecret",
           "secretsmanager:CreateSecret",
           "secretsmanager:UpdateSecret"
-        ],
-
-        Effect   = "Deny",
-        Resource = "arn:aws:secretsmanager:*:*:secret:accelerator*",
+        ]
+        Effect   = "Deny"
+        Resource = "arn:aws:secretsmanager:*:*:secret:accelerator*"
         sid      = "DenyDefaultSecretManagerAlteration"
       }
     ]
