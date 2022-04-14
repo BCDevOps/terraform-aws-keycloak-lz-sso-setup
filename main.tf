@@ -97,7 +97,7 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
           "arn:aws:iam::*:role/CloudCustodian",
           "arn:aws:iam::*:role/AWSCloudFormationStackSetExecutionRole",
           "arn:aws:iam::*:role/*BCGOV*",
-          "arn:aws:iam::*:role/EC2-Default-SSM-AD-Role"
+          "arn:aws:iam::*:instance-profile/EC2-Default-SSM-AD-Role-ip"
 
         ],
         Sid = "DenyPermBoundaryBCGovAlteration"
@@ -136,13 +136,13 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
       },
       {
         Action = [
-          "ssm:DeleteParameters",
+          "ssm:DeleteParameter*",
           "ssm:PutParameter"
         ],
         Effect = "Deny",
         "Resource" : [
-          "arn:aws:ssm:*:*:parameter/*pbmmaccel*",
-          "arn:aws:ssm:*:*:parameter/octk*"
+          "arn:aws:ssm:*:*:parameter/cdk-bootstrap/pbmmaccel/*",
+          "arn:aws:ssm:*:*:parameter/octk/*"
         ],
         sid = "DenyDefaultParameterStoreAlteration"
 
