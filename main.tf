@@ -144,7 +144,7 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
           "arn:aws:ssm:*:*:parameter/cdk-bootstrap/pbmmaccel/*",
           "arn:aws:ssm:*:*:parameter/octk/*"
         ],
-        sid = "DenyDefaultParameterStoreAlteration"
+        Sid = "DenyDefaultParameterStoreAlteration"
       },
       {
         Action = [
