@@ -116,7 +116,7 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
         Action = [
           "iam:DeleteInstanceProfile",
           "iam:RemoveRoleFromInstanceProfile"
-        ],
+        ]
         Effect   = "Deny"
         Resource = "arn:aws:iam::*:instance-profile/EC2-Default-SSM-AD-Role-ip"
         Sid      = "DenyDefaultInstanceProfileAlteration"
