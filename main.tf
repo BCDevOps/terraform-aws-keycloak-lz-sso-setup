@@ -1,21 +1,3 @@
-terraform {
-  required_providers {
-    keycloak = {
-      source  = "mrparkers/keycloak"
-      version = ">= 2.0.0"
-    }
-    aws = {
-      source  = "hashicorp/aws"
-      version = "3.11.0"
-    }
-  }
-}
-
-//dropping this back in to allow for proper migration of resources deependent on it
-provider "http" {
-
-}
-
 provider "external" {
 
 }
