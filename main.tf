@@ -1,7 +1,3 @@
-provider "external" {
-
-}
-
 data "keycloak_realm" "kc-lz-sso-realm" {
   realm = var.kc_realm
 }
