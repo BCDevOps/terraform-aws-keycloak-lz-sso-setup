@@ -62,6 +62,12 @@ resource "aws_iam_policy" "bcgov_perm_boundary" {
         Sid      = "DenyPermBoundaryBCGovIDPAlteration"
       },
       {
+        Action   = "elasticloadbalancing:DeleteLoadBalancer"
+        Effect   = "Deny"
+        Resource = "arn:aws:elasticloadbalancing:ca-central-1:*:loadbalancer/app/default/*"
+        Sid      = "DenyPermBoundaryALBAlteration"
+      },
+      {
         Action = [
           "iam:Create*",
           "iam:Update*",
