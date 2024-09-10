@@ -7,7 +7,7 @@ data "external" "saml_idp_descriptor" {
   program = ["${path.module}/bin/http_get.sh"]
 
   query = {
-    url = "${var.kc_base_url}/realms/${var.kc_realm}/protocol/saml/descriptor"
+    url = "${var.kc_base_url}/auth/realms/${var.kc_realm}/protocol/saml/descriptor"
   }
 }
 
