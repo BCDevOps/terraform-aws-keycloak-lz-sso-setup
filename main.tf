@@ -2,18 +2,14 @@ data "keycloak_realm" "kc-lz-sso-realm" {
   realm = var.kc_realm
 }
 
-// more-or-less drop-in replacement for (broken-in-0.14) http provider
-data "external" "saml_idp_descriptor" {
-  program = ["${path.module}/bin/http_get.sh"]
 
-  query = {
-    url = "${var.kc_base_url}/realms/${var.kc_realm}/protocol/saml/descriptor"
-  }
+data "http" "saml_idp_metadata" {
+  url = "${var.kc_base_url}/realms/${var.kc_realm}/protocol/saml/descriptor"
 }
 
 resource "aws_iam_saml_provider" "default" {
   name                   = var.aws_saml_idp_name
-  saml_metadata_document = tostring(data.external.saml_idp_descriptor.result.data)
+  saml_metadata_document = data.http.saml_idp_metadata.response_body
 }
 
 resource "aws_iam_role" "admin_role" {
