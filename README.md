@@ -30,7 +30,7 @@ This repo provides a starting point for users who want to create valid Terraform
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.0 |
-| <a name="provider_external"></a> [external](#provider\_external) | n/a |
+| <a name="provider_http"></a> [http](#provider\_http) | n/a |
 | <a name="provider_keycloak"></a> [keycloak](#provider\_keycloak) | >= 2.0.0 |
 
 ## Modules
@@ -48,7 +48,7 @@ This repo provides a starting point for users who want to create valid Terraform
 | [aws_iam_role_policy_attachment.role-policy-attach](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_saml_provider.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_saml_provider) | resource |
 | [aws_caller_identity.aws_context](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
-| [external_external.saml_idp_descriptor](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
+| [http_http.saml_idp_metadata](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http) | data source |
 | [keycloak_realm.kc-lz-sso-realm](https://registry.terraform.io/providers/mrparkers/keycloak/latest/docs/data-sources/realm) | data source |
 
 ## Inputs
